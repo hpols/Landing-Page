@@ -23,8 +23,7 @@ function isInViewport(section) {
 	let sectionBounds = section.getBoundingClientRect();
 
 	return ( //only checking vertically as the section is set to fill the width
-		sectionBounds.top >= 0 &&
-		sectionBounds.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+		sectionBounds.top >= 0 || sectionBounds.bottom <= (window.innerHeight || document.documentElement.clientHeight)
 	);
 }
 
@@ -69,7 +68,7 @@ function scrollToSelected() {
 		evt.preventDefault;
 		let targetId = evt.target.getAttribute("href").split("#")[1]; //grab the id from the link
 		let targetElement = document.getElementById(targetId); // locate section by ID
-		targetElement.scrollIntoView();
+		targetElement.scrollIntoView({behavior: "smooth"});
 	});
 }
 
