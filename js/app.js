@@ -34,17 +34,13 @@ function createNav() {
 	for (const section of sections) {
 		/* Possibily sections are added that should not be offered in the navbar and thus don't have data-nav */
 		if(section.hasAttribute("data-nav")) { 
-			let link = document.createElement("a");
 			let navItem = document.createElement("li");
-
+			
 			/* retrieving the necessary info and setting it to the elements*/
-			link.textContent = section.getAttribute("data-nav"); // name for navbar item 
-			link.setAttribute("href", "index.html#" + section.getAttribute("id")); // ID for link
+			navItem.textContent = section.getAttribute("data-nav"); //data-nav provides the navItem text
 			navItem.classList.add("menu__link"); // CSS class provided for styling 
 
-			/* appending all the information to the parents*/
-			navItem.appendChild(link);
-			navList.appendChild(navItem);
+			navList.appendChild(navItem);//appending all the information to the parent
 		}
 	}
 }
@@ -52,7 +48,7 @@ function createNav() {
 // Add class 'active' to section when near top of viewport
 function activateSectionInView() {
 	document.addEventListener("scroll", function() {
-		for (const section of sections) {
+		for (const section of sections) { //check which one(s) are active and set the classes accordingly
 			if (isInViewport(section)) {
 				section.classList.add("your-active-class");
 			} else {
@@ -65,19 +61,21 @@ function activateSectionInView() {
 // Scroll to anchor ID using scrollTO event
 function scrollToSelected() {
 	document.querySelector(".navbar__menu").addEventListener("click", function (evt) {
-		evt.preventDefault;
-		let targetId = evt.target.getAttribute("href").split("#")[1]; //grab the id from the link
-		let targetElement = document.getElementById(targetId); // locate section by ID
-		targetElement.scrollIntoView({behavior: "smooth"});
+		if(evt.target.nodeName =="LI") {
+			evt.preventDefault;
+			/*use the navitem text to get the element through its data-nav*/
+			let targetElement = document.querySelector(`[data-nav="${evt.target.textContent}"]`);
+			targetElement.scrollIntoView({behavior: "smooth"});
+		}
 	});
 }
 
 // Hide the navBar when further down and we are not scrolling
 function hideNavBar() {
-	window.addEventListener("scroll", function() {
+	window.addEventListener("scroll", function() { //show navList when scrolling
 		navList.style.display = "inherit";
-		window.setTimeout(function() {
-			navList.style.display = "none";
+		window.setTimeout(function() { //once/everytime scrolling starts set a timer for 5 seconds
+			navList.style.display = "none"; //5 seconds up? Bye bey, navList.
 		},5000);
 	})
 }
